@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+	<header>
+		<![CDATA[
+			From: $webName <$fromAddress>
+			Reply-To: $webName <$fromAddress>
+			BCC: <$adminAddress>
+			MIME-Version: 1.0
+			Content-Type: text/html; charset=UTF-8
+			Return-Path: $fromAddress
+			Sender: $fromAddress
+			X-Sender: $fromAddress
+			X-Mailer: $webName Mail
+			Content-Transfer-Encoding: 8bit
+		]]>
+	</header>
+	<message id="reminder">
+		<subject>[Christmas 2012] A message from your Secret Santa!</subject>
+		<body>		
+		</body>
+	</message>
+	<message id="new_post">
+		<subject>[Christmas 2012] $subject</subject>
+		<body>		
+		</body>
+	</message>
+	<message id="post_update">
+		<subject>[Christmas 2012] $subject</subject>
+		<body>		
+		</body>
+	</message>
+	<message id="comment">
+		<subject>[Christmas 2012] $subject</subject>
+		<body>		
+		</body>
+	</message>
+</mail>
