@@ -1,0 +1,172 @@
+-- MySQL dump 10.13  Distrib 5.6.26, for osx10.10 (x86_64)
+--
+-- Host: 127.0.0.1    Database: santa12
+-- ------------------------------------------------------
+-- Server version	5.6.26
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ads`
+--
+
+DROP TABLE IF EXISTS `ads`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ads` (
+  `postid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `content` varchar(1000) NOT NULL,
+  `link` varchar(100) NOT NULL,
+  PRIMARY KEY (`postid`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=ucs2;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comments` (
+  `postid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` text NOT NULL,
+  `for_postid` int(10) unsigned NOT NULL COMMENT 'The post entry to whom this comment is addressed.',
+  PRIMARY KEY (`postid`),
+  CONSTRAINT `FK_comment_1` FOREIGN KEY (`postid`) REFERENCES `posts` (`postid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1760 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `likes` (
+  `postid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL,
+  `date_liked` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`postid`,`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1757 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `notifs`
+--
+
+DROP TABLE IF EXISTS `notifs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notifs` (
+  `notifid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `for_userid` int(10) unsigned NOT NULL,
+  `info` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `isread` tinyint(1) NOT NULL DEFAULT '0',
+  `type` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`notifid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2080 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `posts` (
+  `postid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL,
+  `date_posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`postid`),
+  KEY `FK_post_1` (`userid`),
+  CONSTRAINT `FK_post_1` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1760 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `profiles`
+--
+
+DROP TABLE IF EXISTS `profiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `profiles` (
+  `userid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(100) NOT NULL,
+  `nickname` varchar(100) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `giftee_email` varchar(45) DEFAULT NULL,
+  `giftee_notif` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Subscribe to Updates from the Giftee',
+  `comment_notif` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Notify Comments and Likes on your Posts',
+  `first_time` tinyint(1) NOT NULL DEFAULT '1',
+  `display_top_news` tinyint(1) NOT NULL DEFAULT '0',
+  `photo_file` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  CONSTRAINT `FK_profiles_1` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `stories`
+--
+
+DROP TABLE IF EXISTS `stories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `stories` (
+  `postid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(300) NOT NULL,
+  `description` text NOT NULL,
+  `photo_file` varchar(256) DEFAULT NULL,
+  `public` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`postid`),
+  CONSTRAINT `FK_blog_1` FOREIGN KEY (`postid`) REFERENCES `posts` (`postid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1758 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `userid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `ip_address` varchar(80) DEFAULT NULL,
+  `session_id` varchar(45) DEFAULT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `users` VALUES (1,'delfino.jl@ntsp.nec.co.jp','40be4e59b9a2a2b5dffb918c0e86b3d7','::1','dqdpommnpc0a3r5a2if48auuh4','2012-11-16 06:38:30','2012-10-31 02:17:03');
+
+-- Dump completed on 2012-10-31 11:03:17

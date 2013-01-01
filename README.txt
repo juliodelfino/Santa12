@@ -32,3 +32,6 @@ CodeIgniter Web Application Setup on Linux Machine
 	Then try visiting your site again. If it still doesn't work, try tweaking <webapp>/application/config/config.php:
 		From: $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 		To: $config['permitted_uri_chars'] = 'a-z 0-9~%\.:_-';
+
+
+mysql_dump_santa12.zip password: check the fake URL "santa12.ntsp.nec.co.jp"
